@@ -29,20 +29,20 @@ pipeline {
             }
         }
 
-        stage('\u270D Build image') {
+        stage('Build image') {
             steps{
                 sh "docker build -t api-demo:v${env.BUILD_NUMBER} ."
             }
         }
 
-        stage('\u26F1 Deploy') {
+        stage('Deploy') {
             steps{
                 sh 'docker ps -f name=api-container -q  | xargs --no-run-if-empty docker rm -f'
                 sh "docker run -d --name api-container -p 8080:8080 api-demo:v${env.BUILD_NUMBER}"
             }
         }
 
-        stage('\u261D Api Test'){
+        stage('Api Test'){
             steps{
                 sh 'sleep 30'
                 // build job: 'Jmeter-test'

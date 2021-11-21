@@ -17,7 +17,7 @@ pipeline {
                     withSonarQubeEnv('SonarQube') {
                         def project_key="api-test-demo"
                         def scannerHome = tool 'sonar-scanner';
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${project_key} -Dsonar.projectName=${project_key}"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${project_key} -Dsonar.projectName=${project_key} -Dsonar.java.binaries=build/classes"
                     }
                 }
             }

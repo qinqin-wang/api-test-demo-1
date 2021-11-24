@@ -33,12 +33,20 @@ pipeline {
             }
         } 
 
-        stage('Deploy') {
+        stage('Deploy to DEV') {
             steps{
                 sh 'echo "-----Deploy stage-----"'
             }
         } 
-        
+        stage('Approval of Dev') {
+            steps {
+                script {
+                    timeout(time: 30, unit: 'MINUTES') {
+                        input message: 'Deploy Dev?', submitter: 'admin'
+                    }
+                }
+            }
+        }
         stage('Deploy Two Env'){
             parallel {
                 stage('qa') {

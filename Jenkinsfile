@@ -46,6 +46,22 @@ pipeline {
                 sh '/opt/apache-jmeter-5.4.1/bin/jmeter.sh -n -t api-test/api-test-demo.jmx'
             }
         }
+        stage('Approval of QA') {
+            steps {
+                script {
+                    timeout(time: 15, unit: 'MINUTES') {
+                        input message: 'Deploy to QA?', submitter: 'admin'
+                    }
+                }
+            }
+        }
+        stage('Deploy QA'){
+            steps{
+                sh 'docker ps -f name=api-container-qa -q  | xargs --no-run-if-empty docker rm -f'
+                sh "docker run -d --name api-container-qa -p 8082:8080 api-demo:v${env.BUILD_NUMBER}"
+            }
+        }
+
     }
 }
 
